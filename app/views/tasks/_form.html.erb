@@ -26,7 +26,7 @@
   <div class="field checkbox">
     <%= f.label :watchers %>
     <ul>
-      <% User.find(:all).each do |w| %>
+      <% @task.project.users.each do |w| %>
       <li><%= check_box_tag 'task[watcher_ids][]', w.id, @task.watchers.include?(w) %><%= w.name %></li>
       <% end %>
     </ul>

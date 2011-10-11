@@ -34,4 +34,11 @@ class TasksControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:task)
   end
+
+  test "should show only users of the project to be watchers" do
+    get :edit, id: @task.id
+    assert_equal assigns(:responsibles).length, 1
+    assert_equal assigns(:responsibles)[0].name, 'Spok'
+  end
+
 end

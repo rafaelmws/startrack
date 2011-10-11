@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
   before_filter :authenticate_user!
 
-  before_filter :load_users, :load_estimates, :load_status, :load_types, :only => [:new, :create, :edit]
+  before_filter :load_estimates, :load_status, :load_types, :only => [:new, :create, :edit]
 
   def show
     @task = Task.find(params[:id])
@@ -12,16 +12,19 @@ class TasksController < ApplicationController
   def new
     @project = Project.find(params[:project_id])
     @task = @project.tasks.new
+    load_users
   end
 
   def edit
     @task = Task.find(params[:id])
+    load_users
   end
 
   def create
     @project = Project.find(params[:project_id])
     @task = @project.tasks.build(params[:task])
     @task.user = current_user
+    load_users
 
     respond_to do |format|
       if @task.save
@@ -71,7 +74,7 @@ class TasksController < ApplicationController
   end
 
   def load_users
-    @responsibles = User.all
+    @responsibles = @task.project.users
   end
 
 end
